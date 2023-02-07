@@ -1,0 +1,26 @@
+name: main-runner
+
+on:
+  push:
+    branch:
+      - '*'
+
+jobs:
+  main-runner:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: test-wait-trigger
+        uses: lewagon/wait-on-check-action@v1.2.0
+        with:
+          ref: ${{ github.ref }}
+          running-workflow-name: main-runner
+          check-name: test-runner
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 10
+      - name: python3-run
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          cache: 'pip' # caching pip dependencies
+      - run: pip install -r requirements.txt
