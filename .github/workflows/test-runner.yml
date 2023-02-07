@@ -2,7 +2,7 @@ name: test-runner
 
 on:
   push:
-    branch:
+    branches:
       - '*'
 
 jobs:
