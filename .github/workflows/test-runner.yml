@@ -3,7 +3,7 @@ name: test-runner
 on: [push, pull_request]
 
 jobs:
-  main-runner:
+  test-runner:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
