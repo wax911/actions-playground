@@ -1,9 +1,6 @@
 name: main-runner
 
-on:
-  push:
-    branch:
-      - '*'
+on: [push, pull_request]
 
 jobs:
   main-runner:
@@ -19,8 +16,9 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 10
       - name: python3-run
-      - uses: actions/setup-python@v4
+        uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-          cache: 'pip' # caching pip dependencies
-      - run: pip install -r requirements.txt
+          cache: 'pip'
+      - name: Install requirements
+        run: pip install -r requirements.txt
