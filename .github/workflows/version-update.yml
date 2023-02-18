@@ -26,7 +26,7 @@ jobs:
           CODE=$((MAJOR + MINOR + PATCH))
           echo "version=$(cat VERSION)" > gradle/version.properties
           echo "code=$CODE" >> gradle/version.properties
-          echo "name=v$(cat VERSION)" > gradle/version.properties
+          echo "name=v$(cat VERSION)" >> gradle/version.properties
 
       - name: Show version
         run: cat gradle/version.properties
