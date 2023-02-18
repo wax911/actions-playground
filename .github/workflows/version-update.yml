@@ -13,7 +13,7 @@ jobs:
 
       - name: Extract version
         id: version
-        run: echo "::set-output name=version::$(echo $GITHUB_REF | sed 's|.*/||')"
+        run: echo "name=version::$(echo $GITHUB_REF | sed 's|.*/||')" >> $GITHUB_OUTPUT
 
       - name: Calculate code
         id: code
