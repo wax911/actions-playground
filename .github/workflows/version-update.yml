@@ -25,6 +25,7 @@ jobs:
           CODE=$((MAJOR + MINOR + PATCH))
           echo "version=${{ steps.version.outputs.version }}" > gradle/version.properties
           echo "code=$CODE" >> gradle/version.properties
+          echo "name=v${{ steps.version.outputs.version }}" >> gradle/version.properties
 
       - name: Show version
         run: cat gradle/version.properties
@@ -35,10 +36,10 @@ jobs:
 
       - name: Commit version.properties
         run: |
-          git config --local user.email "action@github.com"
+          git config --local user.email "github-action@github.com"
           git config --local user.name "GitHub Action"
           git add gradle/version.properties
-          git commit -m "Bump version to ${{ steps.version.outputs.version }}"
+          git commit -m "Update version.properties to ${{ steps.version.outputs.version }}"
         
       - name: Push changes
         if: steps.version-changed.outputs.changed == 'true'
