@@ -1,49 +1,46 @@
-name: Bump version and generate version.properties
+name: verison-update
+
 on:
   push:
     tags:
       - '*'
 
 jobs:
-  bump-version:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Extract version
         id: version
-        run: echo "name=$(echo $GITHUB_REF | sed 's|.*/||')" >> $GITHUB_OUTPUT
+        run: echo "${GITHUB_REF#refs/tags/}" > VERSION
 
       - name: Calculate code
         id: code
         run: |
-          IFS='.' read -ra VER <<< "${{ steps.version.outputs.version }}"
+          IFS='.' read -ra VER <<< "$(cat VERSION)"
           MAJOR=$((VER[0] * 1000000000))
           MINOR=$((VER[1] * 10000))
           PATCH=${VER[2]}
           CODE=$((MAJOR + MINOR + PATCH))
-          echo "version=${{ steps.version.outputs.version }}" > gradle/version.properties
+          echo "version=$(cat VERSION)" > gradle/version.properties
           echo "code=$CODE" >> gradle/version.properties
-          echo "name=v${{ steps.version.outputs.version }}" >> gradle/version.properties
+          echo "name=v$(cat VERSION)" > gradle/version.properties
 
       - name: Show version
         run: cat gradle/version.properties
 
-      - name: Check if version.properties has changed
-        id: version-changed
-        run: echo ::set-output name=changed::$(if git diff --quiet gradle/version.properties; then echo "false"; else echo "true"; fi)
-
       - name: Commit version.properties
         run: |
-          git config --local user.email "github-action@github.com"
+          git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add gradle/version.properties
-          git commit -m "Update version.properties to ${{ steps.version.outputs.version }}"
+          git commit -m "Bump version to $(cat VERSION)"
         
       - name: Push changes
-        if: steps.version-changed.outputs.changed == 'true'
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: main
+          directory: .
