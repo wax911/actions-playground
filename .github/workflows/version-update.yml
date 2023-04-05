@@ -37,7 +37,7 @@ jobs:
           git config --local user.name "GitHub Action"
           git add gradle/version.properties
           git commit -m "Bump version to $(cat VERSION)"
-          git tag -a v$(cat VERSION)
+          git tag -a $(cat VERSION) -F <(git tag -l --format='%(contents)' $(cat VERSION))
           git push --follow-tags
         
       - name: Push changes
