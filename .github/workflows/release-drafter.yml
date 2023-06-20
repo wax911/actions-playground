@@ -3,29 +3,24 @@ name: release-drafter
 on:
   push:
     branches:
-      - develop
+      - 'develop'
   pull_request:
     # Only following types are handled by the action, but one can default to all as well
-    types: [opened, reopened, synchronize]
+    types: [ opened, reopened, synchronize ]
 
 permissions:
   contents: read
 
 jobs:
-  update-release-draft:
+  update-draft-release:
     permissions:
-      # write permission is required to create a github release
       contents: write
-      # write permission is required for autolabeler
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - id: release-factory
-        uses: release-drafter/release-drafter@v5
+      - uses: release-drafter/release-drafter@v5
         with:
-           config-name: release-drafter-config.yml
-           disable-autolabeler: false
+          config-name: release-drafter-config.yml
+          disable-autolabeler: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
