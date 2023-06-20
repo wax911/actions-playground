@@ -1,0 +1,19 @@
+name: Release Draft Trigger
+
+on:
+  release:
+    types:
+      - created
+      - edited
+
+jobs:
+  draft-trigger:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Triggered on release draft
+        run: |
+          echo "Release draft created or updated!"

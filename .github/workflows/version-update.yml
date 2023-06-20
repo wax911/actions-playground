@@ -3,7 +3,7 @@ name: verison-update
 on:
   push:
     tags:
-      - '*'
+      - '*.*.*'
 
 jobs:
   build:
