@@ -1,4 +1,4 @@
-name: Release Draft Trigger
+name: release-draft-trigger
 
 on:
   release:
