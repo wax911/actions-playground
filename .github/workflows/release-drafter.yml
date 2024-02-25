@@ -59,7 +59,7 @@ jobs:
           branch: chore/update-version-meta-data
           # Optional. Options used by `git-commit`.
           # See https://git-scm.com/docs/git-commit#_options
-          commit_options: '--no-verify --signoff'
+          commit_options: '--no-verify --signoff --amend --no-edit'
           # Optional glob pattern of files which should be added to the commit
           # Defaults to all (.)
           # See the `pathspec`-documentation for git
@@ -73,3 +73,5 @@ jobs:
           commit_author: Author <actions@github.com> # defaults to author of the commit that triggered the run
           # Optional. Create given branch name in local and remote repository.
           create_branch: true
+          push_options: '--force'
+          skip_fetch: true
