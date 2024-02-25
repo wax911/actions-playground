@@ -50,7 +50,24 @@ jobs:
         if: github.event_name == 'pull_request' || github.event_name == 'pull_request_target'
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: Update version.properties
+          # Optional. Commit message for the created commit.
+          # Defaults to "Apply automatic changes"
+          commit_message: "chore: update version.properties"
+          # Optional. Local and remote branch name where commit is going to be pushed
+          #  to. Defaults to the current branch.
+          #  You might need to set `create_branch: true` if the branch does not exist.
+          branch: chore/update-version-meta-data
+          # Optional. Options used by `git-commit`.
+          # See https://git-scm.com/docs/git-commit#_options
           commit_options: '--no-verify --signoff'
+          # Optional glob pattern of files which should be added to the commit
+          # Defaults to all (.)
+          # See the `pathspec`-documentation for git
+          # - https://git-scm.com/docs/git-add#Documentation/git-add.txt-ltpathspecgt82308203
+          # - https://git-scm.com/docs/gitglossary#Documentation/gitglossary.txt-aiddefpathspecapathspec
           file_pattern: 'gradle/version.properties'
+          # Optional. Local file path to the repository.
+          # Defaults to the root of the repository.
           repository: .
+          # Optional. Create given branch name in local and remote repository.
+          create_branch: true
