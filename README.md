@@ -1,3 +1,3 @@
 # actions-playground
 
-Playground for random github actions
+Playground for random github actions.
