@@ -1,0 +1,52 @@
+name: test-db-setup
+
+on:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:13
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: public
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd "pg_isready -U postgres" 
+          --health-interval 10s 
+          --health-timeout 5s 
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/public
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install PostgreSQL client
+      run: sudo apt-get install -y postgresql-client
+
+    - name: Create Database Schema
+      run: |
+        psql ${{ env.DATABASE_URL }} -f sample/01_db_creation.sql
+
+    - name: Seed Database
+      run: |
+        psql ${{ env.DATABASE_URL }} -f sample/01_db_full_seed.sql
+    - name: Verify Data Exists
+      env:
+        PGPASSWORD: postgres
+      run: |
+        psql ${{ env.DATABASE_URL }} -f sample/01_db_full_scan.sql
